@@ -1325,3 +1325,11 @@ install.packages("lattice")
 library(lattice)
 
 densityplot(~ age, data = new_data, groups = job2, auto.key = T)
+
+
+densityplot(~price | factor(gender2),data = new_data,groups = position2, plot.points = T, auto.key = T) #~바로 앞에 써주는 x축 데이타
+
+
+densityplot(~price | factor(position2),data = new_data,groups = gender2, plot.points = F, auto.key = T) #plot.points 를 F로밀도삭제
+
+xyplot(price ~ age | factor(gender2), data = new_data)
