@@ -1324,4 +1324,4 @@ install.packages("lattice")
 
 library(lattice)
 
-densityplot(~ age, data = new_data)
+densityplot(~ age, data = new_data, groups = job2, auto.key = T)
