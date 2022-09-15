@@ -1348,4 +1348,6 @@ user_data$house_type2 <- house_type2
 head(user_data)
 
 pay_data <- read.csv("pay_data.csv", header = T, fileEncoding = "euc-kr")
-
+head(pay_data)
+table(pay_data$product_type)
+product_price <- dcast(pay_data, user_id~product_type, sum, na.rm= T)
