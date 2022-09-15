@@ -1154,7 +1154,6 @@ df_all
 ========================================================================================================================================================
 
 
-
 #다운로드 주소 , 가메출판사 , 게시판 , 소스자료실 :[G295]빅 데이터 분석을 위한 R 프로그래밍 개정판(2nd Edition) - R Scripts
 install.packages("reshape2")
 library(reshape2)
@@ -1333,3 +1332,20 @@ densityplot(~price | factor(gender2),data = new_data,groups = position2, plot.po
 densityplot(~price | factor(position2),data = new_data,groups = gender2, plot.points = F, auto.key = T) #plot.points 를 F로밀도삭제
 
 xyplot(price ~ age | factor(gender2), data = new_data)
+
+
+
+user_data <-read.csv("user_data.csv", header = T , fileEncoding = "euc-kr")
+head(user_data)
+table(user_data$house_type)
+length(user_data$house_type)
+house_type2 <- ifelse(user_data$house_type == 1 | user_data$house_type == 2,0,1) # 단독주택, 다가구 : 0 , 아파트, 오피스텔 :1
+#↑ 파생변수 더미 변수 라고 부른다
+
+#_= proc(aaa)   _는 의미없는 더미변수
+house_type2[1:10]
+user_data$house_type2 <- house_type2
+head(user_data)
+
+pay_data <- read.csv("pay_data.csv", header = T, fileEncoding = "euc-kr")
+
