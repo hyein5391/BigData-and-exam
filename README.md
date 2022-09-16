@@ -1321,7 +1321,6 @@ barplot(resident_gender, beside = T, horiz = T, col = rep(c(2,4),5), legend = c(
 
 install.packages("lattice")
 
-library(lattice)
 
 densityplot(~ age, data = new_data, groups = job2, auto.key = T)
 
@@ -1334,7 +1333,7 @@ densityplot(~price | factor(position2),data = new_data,groups = gender2, plot.po
 xyplot(price ~ age | factor(gender2), data = new_data)
 
 
-
+setwd("C:/bigdataR/PartII")
 user_data <-read.csv("user_data.csv", header = T , fileEncoding = "euc-kr")
 head(user_data)
 table(user_data$house_type)
@@ -1343,12 +1342,22 @@ house_type2 <- ifelse(user_data$house_type == 1 | user_data$house_type == 2,0,1)
 #↑ 파생변수 더미 변수 라고 부른다
 
 #_= proc(aaa)   _는 의미없는 더미변수
-house_type2[1:10]
-user_data$house_type2 <- house_type2
+house_type2[1:10]       
+user_data$house_type2 <- house_type2      #하우스 타입 2를 저장하여 나타낸다
 head(user_data)
 
+library(lattice)
+library(dplyr)
+library(reshape2)
 pay_data <- read.csv("pay_data.csv", header = T, fileEncoding = "euc-kr")
 head(pay_data)
 table(pay_data$product_type)
 product_price <- dcast(pay_data, user_id~product_type, sum, na.rm= T)
 head(product_price)
+
+#===============================================================================================================
+#2022년  9월 16일
+
+
+
+
