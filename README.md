@@ -1597,3 +1597,71 @@ p + geom_point(aes(color=Species, shape=Species))
 p <- ggplot(data = iris, aes(x=Petal.Length, y = Petal.Width))
 p
 p + geom_point(aes(color=Species, shape=Species))
+
+
+
+
+
+====================================================================================================================================================
+SQL
+
+USE WORK;
+SELECT * FROM shopuser;
+
+DESC shopuser;
+INSERT INTO shopuser VALUES ('tiger', '홍길동', 25);
+INSERT INTO shopuser VALUES ('lion', '김삿갓', 30);
+
+DESC shopproduct;
+INSERT INTO shopproduct VALUES (1, '냉장고', 1000000);
+INSERT INTO shopproduct VALUES (2, '세탁기', 550000);
+INSERT INTO shopproduct VALUES (3, 'TV', 1200000);
+INSERT INTO shopproduct VALUES (4, '청소기', 200000);
+SELECT * FROM shopproduct;
+
+
+DESC shopsale;
+INSERT INTO shopsale VALUES('tiger', 2 , 1);
+INSERT INTO shopsale VALUES('lion', 3 , 2);
+INSERT INTO shopsale VALUES('lion', 4 , 2);
+INSERT INTO shopsale VALUES('tiger', 1 , 3);
+SELECT * from shopsale;
+
+/*  Join 쿼리 [별명을 사용하여 문법을 줄일수있다 2개의 테이블 조인 */
+SELECT u.uid, u.uname,s.pCode, u.uage, s.sCount
+	FROM shopuser u, shopsale s
+	WHERE u.uid = s.uid;
+	
+/* shopProduct와 sopsale 조인 */
+SELECT p.pCode, s.sCount, p.pName 
+	FROM shopproduct p, shopsale s
+	WHERE p.pCode = s.pCode;
+
+/* shopuser, shopsale, shopproduct 조인 */
+SELECT u.uname, p.pName, s.sCount
+	FROM shopuser u, shopproduct p, shopsale s
+	WHERE u.uid = s.uid AND p.pCode = s.pCode;
+	
+SELECT *
+	FROM shopuser u, shopproduct p, shopsale s
+	WHERE u.uid = s.uid AND p.pCode = s.pCode;
+
+/* 김삿갓이 구매한 내역에 대해 성명, 상품명, 수량을 출력 */
+
+SELECT u.uname, p.pName, s.sCount, p.pPrice * s.sCount subtot
+	FROM shopuser u, shopproduct p, shopsale s
+	WHERE u.uid = s.uid AND p.pCode = s.pCode
+		AND u.uname = '김삿갓';
+
+/* 서브쿼리 : 조회한 결과를 다른 조회구문의 입력 */
+/* 세탁기를 구매한 고객들의 모든 이름 */
+
+SELECT * FROM shopsale;
+
+SELECT * FROM shopuser WHERE uid =
+	(SELECT uid FROM shopsale WHERE pCode = 
+		(SELECT pCode FROM shopproduct WHERE pname = '청소기')) ;
+
+
+
+
