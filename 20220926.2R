@@ -1,0 +1,60 @@
+url <- "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=SyDxU1fZhs5bxdV3Uy9pwqEIgdmXRFEedsH0fdk52etyVn9pTU1zqj4Apm0aMHNXAfTCoXMNoHcyxXb%2Bgjrjcw%3D%3D&returnType=xml&numOfRows=100&pageNo=1&sidoName=%EC%B6%A9%EB%B6%81&ver=1.0"
+
+xmlFile <- xmlParse(url) #파서를 이용하여 저장
+df <- xmlToDataFrame(getNodeSet(xmlFile, "//item"))   #반복탐색하며 item 내용을 저장한다
+df
+stationName <- df$stationName
+pm10Value <- as.numeric(df$pm10Value)   #숫자형으로 변환
+pm10Value
+barplot(pm10Value, names.arg = stationName, col = rainbow(7))
+
+#===================================================================================================================
+#측정소별 10시간 측정정보 조회
+
+url <- "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey=SyDxU1fZhs5bxdV3Uy9pwqEIgdmXRFEedsH0fdk52etyVn9pTU1zqj4Apm0aMHNXAfTCoXMNoHcyxXb%2Bgjrjcw%3D%3D&returnType=xml&numOfRows=10&pageNo=1&stationName=%EB%B3%B5%EB%8C%80%EB%8F%99&dataTerm=DAILY&ver=1.0"
+
+xmlFile <- xmlParse(url) #파서를 이용하여 저장
+df <- xmlToDataFrame(getNodeSet(xmlFile, "//item"))   #반복탐색하며 item 내용을 저장한다
+df
+pm10Value <- as.numeric(df$pm10Value)
+lifelse(!is.na(pm10Value), pm10Value, round(mean(pm10Value,na.rm = T), 0))
+dataTime <- df$dataTime
+str_sub(dataTime, 12)
+barplot(pm10Value, names.arg = str_sub(dataTime, 12), col = rainbow(7))
+
+pm10Value
+
+
+
+#=======================================================================================================================
+install.packages("wordcloud")
+library(wordcloud)
+word <- c("서울", "부산", "대구")  #항목(문자열)
+freq <- c(600, 430, 250) #빈도수(정수)
+wordcloud(word, freq, random.order = F, random.color = F, colors = rainbow(12))
+
+
+#전입이 많은 지역을 wordcloud 로 표현
+data <- read.csv(file.choose(), header = T, fileEncoding = "euc-kr")
+head(data)
+
+x <- grep("시$", data$행정구역.시군구.별)
+x
+data1 <- data[ x    ,    ]
+head(data1)
+x <- grep("군$", data$행정구역.시군구.별)
+x
+data2 <- data[x,         ]
+data3 <- rbind(data1, data2)
+data4 <- data3[data3$순이동.명. > 0   , ] #순이동이 0보다 큰경우
+word <- data$행정구역.시군구.별
+freq <- data4$순이동.명.
+wordcloud(word,freq, random.order = F, random.color = F, colors = rainbow(12))
+
+df <- data.frame(지역=word, 빈도수=freq)
+view(df)
+
+install.packages("wordcloud2")
+library(wordcloud2)
+
+
