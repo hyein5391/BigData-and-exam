@@ -1665,3 +1665,60 @@ SELECT * FROM shopuser WHERE uid =
 
 
 
+
+
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+
+
+sns.set(style="darkgrid")
+cols = ['price', 'maint','doors','persons','lug_capacity','safety','output',]
+cars = pd.read_csv('c:/ProgramData/Anaconda/car_evaluation.csv', names=cols, header=None)
+
+plot_size = plt.rcParams["figure.figsize"]
+plot_size [0] = 8 #행
+plot_size [1] = 6 #열
+plt.rcParams["figure.figsize"] = plot_size
+cars.output.value_counts().plot(kind='pie', autopct='%0.05f%%', colors=['lightblue', 'lightgreen', 'orange','pink'], explode=(0.05,0.05,0.05,0.05))
+plt.show() #그래프 그리기 마지막 부분에 한번 실행 출력부분을 삭제 할수있다
+
+
+
+price = pd.get_dummies(cars.price, prefix='price') #가격 원핫 인코딩
+maint = pd.get_dummies(cars.maint, prefix='maint') #maint에 의한 원핫 인코딩
+doors = pd.get_dummies(cars.doors, prefix='doors')
+persons = pd.get_dummies(cars.persons, prefix='persons')
+lug_capacity = pd.get_dummies(cars.lug_capacity, prefix='capacity')
+safety = pd.get_dummies(cars.safety, prefix='safety')
+labels = pd.get_dummies(cars.output, prefix='condition')
+print(labels)
+
+X = pd.concat([price, maint, doors, persons, lug_capacity, safety], axis=1) #열단위 병합
+y = labels.values #정답데이터 생성
+print(y)
+
+#훈련입력, 테스트입력, 훈련정답, 테스트정답 순으로 반환됨
+X_train, X_test, y_train, y_test train_test_split(X, y, test_size=0.2, random_state=42)
+
+print(X_train.shape) #데이터의 형식
+print(X_test.shape)
+print(y_train.shape)
+print(y_test.shape)
+
+
+
+price = pd.get_dummies(cars.price, prefix='price')
+maint = pd.get_dummies(cars.maint, prefix='maint')
+
+doors = pd.get_dummies(cars.doors, prefix='doors')
+persons = pd.get_dummies(cars.persons, prefix='persons')
+
+lug_capacity = pd.get_dummies(cars.lug_capacity, prefix='lug_capacity')
+safety = pd.get_dummies(cars.safety, prefix='safety')
+
+labels = pd.get_dummies(cars.output, prefix='condition')
